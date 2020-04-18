@@ -1,5 +1,7 @@
+mod dice;
 mod game;
 
+pub use dice::Dice;
 pub use game::Game;
 
 #[cfg(test)]
