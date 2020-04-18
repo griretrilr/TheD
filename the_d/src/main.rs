@@ -1,10 +1,13 @@
 extern crate pancurses;
 
-use pancurses::{endwin, initscr, noecho, Input};
+use pancurses::{endwin, initscr, noecho, resize_term, Input};
+
+const WINDOW_WIDTH: i32 = 100;
+const WINDOW_HEIGHT: i32 = 30;
 
 fn main() {
     let window = initscr();
-    window.printw("Type things, press delete to quit\n");
+    resize_term(WINDOW_HEIGHT, WINDOW_WIDTH);
     window.refresh();
     window.keypad(true);
     noecho();
@@ -14,11 +17,13 @@ fn main() {
                 window.addch(c);
             }
             Some(Input::KeyDC) => break,
+            Some(Input::KeyExit) => break,
             Some(input) => {
                 window.addstr(&format!("{:?}", input));
             }
             None => (),
         }
+        window.refresh();
     }
     endwin();
 }
