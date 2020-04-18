@@ -17,7 +17,6 @@ fn main() {
                 window.addch(c);
             }
             Some(Input::KeyDC) => break,
-            Some(Input::KeyExit) => break,
             Some(input) => {
                 window.addstr(&format!("{:?}", input));
             }
