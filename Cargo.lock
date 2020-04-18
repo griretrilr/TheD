@@ -11,6 +11,10 @@ version = "0.1.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
+name = "game_logic"
+version = "0.1.0"
+
+[[package]]
 name = "libc"
 version = "0.2.69"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -63,6 +67,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 name = "the_d"
 version = "0.1.0"
 dependencies = [
+ "game_logic 0.1.0",
  "pancurses 0.16.1 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 

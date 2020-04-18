@@ -1,3 +1,4 @@
+extern crate game_logic;
 extern crate pancurses;
 
 use pancurses::{endwin, initscr, noecho, resize_term, Input};
