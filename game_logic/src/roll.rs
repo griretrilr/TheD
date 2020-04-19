@@ -44,37 +44,25 @@ impl std::fmt::Display for Roll {
 
 #[cfg(test)]
 mod tests {
+    extern crate rstest;
+
     use super::{Dice, Modifier, Roll};
+    use rstest::rstest;
 
-    #[test]
-    fn test() {
-        struct TestCase<'a> {
-            dice_size: i32,
-            dice_modifier: i32,
-            face_value: i32,
-            expected_total_value: i32,
-            expected_string: &'a str,
-        }
-
-        impl TestCase<'_> {
-            fn run(&self) {
-                let modifier = Modifier::new(self.dice_modifier);
-                let roll = Roll::new(Dice::new(self.dice_size, modifier), self.face_value);
-                assert_eq!(roll.face_value(), self.face_value);
-                assert_eq!(roll.modifier(), modifier);
-                assert_eq!(roll.total_value(), self.expected_total_value);
-                assert_eq!(roll.to_string(), self.expected_string);
-            }
-        }
-
-        TestCase {
-            dice_size: 6,
-            dice_modifier: 0,
-            face_value: 3,
-            expected_total_value: 3,
-            expected_string: "3 (3 + 0)",
-        }
-        .run()
+    #[rstest(dice_size, dice_modifier, face_value, expected_total_value, expected_string, 
+        case(6, 0, 1, 1, "1 (1 + 0)"),
+        case(6, 1, 3, 4, "4 (3 + 1)"), 
+        case(6, 42, 6, 48, "48 (6 + 42)"),
+        case(20, -1, 10, 9, "9 (10 - 1)"),
+        case(1, -42, 1, -41, "-41 (1 - 42)"))]
+    fn test(dice_size: i32, dice_modifier: i32, face_value: i32, expected_total_value: i32, expected_string: &str) {
+        let modifier = Modifier::new(dice_modifier);
+        let roll = Roll::new(Dice::new(dice_size, modifier), face_value);
+        
+        assert_eq!(roll.face_value(), face_value);
+        assert_eq!(roll.modifier(), modifier);
+        assert_eq!(roll.total_value(), expected_total_value);
+        assert_eq!(roll.to_string(), expected_string);
     }
 
     #[test]
