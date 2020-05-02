@@ -1,4 +1,5 @@
-use super::{Dice, Modifier};
+use crate::battle::dice::Dice;
+use crate::modifier::Modifier;
 
 #[derive(Copy, Clone)]
 pub struct Roll {

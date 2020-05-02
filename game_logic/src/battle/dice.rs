@@ -1,6 +1,6 @@
 extern crate rand;
 
-use super::{Modifier, Roll, SimpleRng};
+use crate::{battle::roll::Roll, modifier::Modifier, simple_rng::SimpleRng};
 use std::fmt::{Debug, Display, Formatter};
 
 #[derive(Copy, Clone, Eq, PartialEq)]
