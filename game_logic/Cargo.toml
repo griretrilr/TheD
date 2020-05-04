@@ -9,6 +9,9 @@ edition = "2018"
 [profile.dev]
 panic = "abort"
 
+[dependencies]
+itertools = "0.9.0"
+
 [dependencies.rand]
 version = "0.7.3"
 

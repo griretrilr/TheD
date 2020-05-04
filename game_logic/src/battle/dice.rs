@@ -24,16 +24,16 @@ impl Dice {
         self.modifier
     }
 
-    pub fn min(self) -> Roll {
-        Roll::new(self, 1)
+    pub fn min(&self) -> Roll {
+        Roll::new(&self, 1)
     }
 
     pub fn max(&self) -> Roll {
-        Roll::new(*self, self.size())
+        Roll::new(self, self.size())
     }
 
     pub fn roll<R: SimpleRng + ?Sized>(&self, rng: &mut R) -> Roll {
-        Roll::new(*self, rng.gen_range_i32(1, self.size() + 1))
+        Roll::new(self, rng.gen_range_i32(1, self.size() + 1))
     }
 }
 

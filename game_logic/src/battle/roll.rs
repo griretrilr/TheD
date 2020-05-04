@@ -2,19 +2,19 @@ use crate::battle::dice::Dice;
 use crate::modifier::Modifier;
 
 #[derive(Copy, Clone)]
-pub struct Roll {
-    dice: Dice,
+pub struct Roll<'a> {
+    dice: &'a Dice,
     face_value: i32,
 }
 
-impl Roll {
-    pub fn new(dice: Dice, face_value: i32) -> Roll {
+impl Roll<'_> {
+    pub fn new<'a>(dice: &'a Dice, face_value: i32) -> Roll<'a> {
         assert!(face_value >= 1 && face_value <= dice.size());
         Roll { dice, face_value }
     }
 
     pub fn dice(&self) -> &Dice {
-        &self.dice
+        self.dice
     }
 
     pub fn face_value(&self) -> i32 {
@@ -30,7 +30,7 @@ impl Roll {
     }
 }
 
-impl std::fmt::Display for Roll {
+impl std::fmt::Display for Roll<'_> {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(
             f,
@@ -58,7 +58,8 @@ mod tests {
         case(1, -42, 1, -41, "-41 (1 - 42)"))]
     fn test(dice_size: i32, dice_modifier: i32, face_value: i32, expected_total_value: i32, expected_string: &str) {
         let modifier = Modifier::new(dice_modifier);
-        let roll = Roll::new(Dice::new(dice_size, modifier), face_value);
+        let dice = Dice::new(dice_size, modifier);
+        let roll = Roll::new(&dice, face_value);
         
         assert_eq!(roll.face_value(), face_value);
         assert_eq!(roll.modifier(), modifier);
@@ -69,18 +70,18 @@ mod tests {
     #[test]
     #[should_panic(expected = "assertion failed")]
     fn zero_face_value_asserts() {
-        let _ = Roll::new(Dice::new(6, Modifier::zero()), 0);
+        let _ = Roll::new(&Dice::new(6, Modifier::zero()), 0);
     }
 
     #[test]
     #[should_panic(expected = "assertion failed")]
     fn negative_face_value_asserts() {
-        let _ = Roll::new(Dice::new(6, Modifier::zero()), -1);
+        let _ = Roll::new(&Dice::new(6, Modifier::zero()), -1);
     }
 
     #[test]
     #[should_panic(expected = "assertion failed")]
     fn face_value_too_high_asserts() {
-        let _ = Roll::new(Dice::new(6, Modifier::zero()), 7);
+        let _ = Roll::new(&Dice::new(6, Modifier::zero()), 7);
     }
 }
