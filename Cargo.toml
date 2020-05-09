@@ -3,5 +3,4 @@
 members = [
     "game_logic",
     "the_d",
-    "utils",
 ]
