@@ -64,4 +64,24 @@ mod tests {
         assert_eq!(display, expected_string);
         assert_eq!(debug, expected_string);
     }
+
+    /// Ensures that the dice set dereferences as the passed-in vector of dice references.
+    #[rstest(dice,
+        case(vec!(Dice::new(6, Modifier::zero()))),
+        case(vec!(Dice::new(6, Modifier::new(1)), Dice::new(10, Modifier::new(-3)))),
+    )]
+    fn test_acts_like_vec_of_dice_refs(
+        dice: Vec<Dice>,
+    ) {
+        let dice_refs_in: Vec<&Dice> = dice.iter().collect();
+        let dice_set = DiceSet::new(dice_refs_in.clone());
+        let dice_refs_out = (*dice_set).clone();
+        assert_eq!(dice_refs_in, dice_refs_out);
+    }
+
+    #[test]
+    #[should_panic(expected = "assertion failed")]
+    fn new_with_empty_dice_asserts() {
+        DiceSet::new(Vec::new());
+    }
 }
